@@ -12,8 +12,8 @@ const BandProfileSetup = () => {
   const blankGenre = { genre: '' }
   const [bandGenres, setBandGenres] = useState([{ ...blankGenre }])
   const [bandSize, setBandSize] = useState(1)
-  const blankInstruments = { instrument: '' }
-  const [bandInstruments, setBandInstruments] = useState([{ ...blankInstruments }])
+  // const blankInstruments = []
+  const [bandInstruments, setBandInstruments] = useState([''])
   const [bandBio, setBandBio] = useState('')
   const pendingProfile = {
     band_name: bandName,
@@ -58,7 +58,7 @@ const BandProfileSetup = () => {
               </div>
 
               <div className='mt-4'>
-                <BandInstruments blankInstruments={blankInstruments} bandInstruments={bandInstruments} setBandInstruments={setBandInstruments} />
+                <BandInstruments bandInstruments={bandInstruments} setBandInstruments={setBandInstruments} />
               </div>
 
               <div className='mt-4'>
