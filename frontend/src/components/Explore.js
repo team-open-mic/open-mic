@@ -8,6 +8,7 @@ function Explore ({ token }) {
   const [showSlide, setShowSlide] = useState(false)
   const [cards, setCards] = useState([])
   const [profile, setProfile] = useState('')
+  const [search, setSearch] = useState('')
 
   console.log('profile', profile)
   console.log('cards', cards)
@@ -18,21 +19,12 @@ function Explore ({ token }) {
   }, [token])
 
   return (
-    <div>
+    <div className='bg-gray-50'>
       <div>
-        <Search setCards={setCards} token={token} setProfile={setProfile} profile={profile} />
+        <Search setCards={setCards} token={token} setProfile={setProfile} profile={profile} setSearch={setSearch} search={search} cards={cards} />
       </div>
       <div>
-        {/* <button
-          className='bg-indigo-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'
-          id='slide-over-heading'
-          aria-haspopup='true'
-          onClick={() => setShowSlide(false)}
-        >Click Me!
-        </button> */}
-      </div>
-      <div>
-        <Card cards={cards} profile={profile} />
+        <Card cards={cards} profile={profile} search={search} />
       </div>
     </div>
 
