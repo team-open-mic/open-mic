@@ -148,6 +148,10 @@ const ProfileSetup = ({ token, userType }) => {
                 <Site site={site} setSite={setSite} />
               </div>
 
+              <div className='mt-4'>
+                <BandLocation bandLocation={bandLocation} setBandLocation={setBandLocation} status={status} />
+              </div>
+
               {/* {status === 'Band' &&
                 <div className='mt-4'>
                   <BandSize bandSize={bandSize} setBandSize={setBandSize} />
