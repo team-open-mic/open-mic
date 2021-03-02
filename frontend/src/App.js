@@ -52,7 +52,7 @@ function App () {
               <Login setAuth={setAuth} isLoggedIn={isLoggedIn} setProfilePk={setProfilePk} />
             </Route>
             <Route path='/profile-setup/'>
-              <ProfileSetup token={token} isLoggedIn={isLoggedIn} setIsImage={setIsImage} setAvatar={setAvatar} />
+              {/* <ProfileSetup token={token} isLoggedIn={isLoggedIn} setIsImage={setIsImage} setAvatar={setAvatar} /> */}
             </Route>
             <Route path='/connections/'>
               <Connections isLoggedIn={isLoggedIn} />

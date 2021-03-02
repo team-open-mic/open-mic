@@ -1,9 +1,13 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-const Images = ({ token, image, setImage }) => {
+const Images = ({ token, image, setImage, setHasFileUpload }) => {
   const handleFile = (event) => {
-    setImage(event.target.files[0])
+    if (event.target.files.length > 0){
+      setImage(event.target.files[0])
+      setHasFileUpload(true)
+    }
+
   }
 
   return (

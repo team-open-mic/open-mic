@@ -12,13 +12,17 @@ const ViewProfile = ({ token }) => {
   console.log('token in viewProfile', token)
 
   useEffect(() => {
-    getUserProfile(token).then(profile => setProfile(profile))
-  }, [])
+    getUserProfile(token).then(profile => {
+      setProfile(profile)
+      console.log("getUserProfile request made from ViewProfile component")
+      console.log({profile})
+      })
+  }, [token])
 
-  if (profile && isEditing) {
+  if (!profile || isEditing) {
     return (
       <div>
-        <ProfileSetup profile={profile} isEditing={isEditing} token={token} />
+        <ProfileSetup isEditing={isEditing} token={token} />
       </div>
     )
   } else if (profile) {
@@ -125,8 +129,6 @@ const ViewProfile = ({ token }) => {
         </div>
       </div>
     )
-  } else {
-    return 'LOADING PROFILE'
   }
 }
 

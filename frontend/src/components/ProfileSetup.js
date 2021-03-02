@@ -1,5 +1,5 @@
 //
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Genre from './profileComponents/Genre'
 import Instruments from './profileComponents/Instruments'
 import Bio from './profileComponents/Bio'
@@ -15,6 +15,7 @@ import WantedInfo from './profileComponents/WantedInfo'
 import { useParams, useHistory } from 'react-router-dom'
 import { postProfiles, deleteProfile, updateProfile, uploadImage } from '../api'
 import Delete from './Delete'
+import { getUserProfile } from '../api'
 
 const statusForApi = (status) => {
   if (status === 'Solo Artist') {
@@ -48,58 +49,55 @@ const instrumentsForApi = (intstruments) => {
   }
 }
 
-const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvatar }) => {
-  const profileForm = useRef()
-  const safeProfile = profile || {}
-  const { type } = useParams()
+const ProfileSetup = ({ token, userType, isEditing, setIsImage, setAvatar }) => {
+  const [hasFileUpload, setHasFileUpload] = useState(false)
+  const [profile, setProfile] = useState(null)
   const history = useHistory()
-  const [name, setName] = useState(safeProfile.name || '')
-  const [genres, setGenres] = useState(safeProfile.genres || [])
-  const [instruments, setInstruments] = useState(safeProfile.instruments || [])
-  const [bio, setBio] = useState(safeProfile.bio || '')
-  const [email, setEmail] = useState(safeProfile.email || '')
+  const [status, setStatus] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [site, setSite] = useState('')
-  const [location, setLocation] = useState(safeProfile.band_location || '')
-  const [state, setState] = useState('')
-  const [vacancy, setVacancy] = useState(safeProfile.vacancy || false)
-  const [image, setImage] = useState(safeProfile.image || [])
-  const [status, setStatus] = useState(safeProfile.individualorband || 'Solo Artist')
-  const [wantedInstruments, setWantedInstruments] = useState(safeProfile.wanted_instruments || [])
-  const [wantedInfo, setWantedInfo] = useState(safeProfile.wanted_info || '')
-  const pendingProfile = {
-    pk: safeProfile.pk,
-    bio: bio,
-    name: name,
-    instruments: instrumentsForApi(instruments),
-    state: state,
-    email: email,
-    website: site,
-    genres: genreForApi(genres),
-    location: location,
-    vacancy: vacancy,
-    individualorband: statusForApi(status),
-    wanted_instruments: wantedIntForAPI(vacancy, wantedInstruments),
-    wanted_info: wantedInfo
+  const [genres, setGenres] = useState([])
+  const [instruments, setInstruments] = useState([])
+  const [vacancy, setVacancy] = useState('')
+  const [wantedInstruments, setWantedInstruments] =useState([])
+  const [wantedInfo, setWantedInfo] =useState([])
+  const [image, setImage] = useState(null)
+  const [bio, setBio] = useState('')
 
-  }
-
-  // console.log('image.length', image.length)
-  // console.log('image', image)
-  // console.log('safeProfile.image', safeProfile.image)
-  // console.log('token in ProfileSetup', token)
-  // console.log('vacancy', vacancy)
-  // console.log('safeProfile.pk', safeProfile.pk)
+  useEffect(() => {
+    getUserProfile(token).then(profile => setProfile(profile))
+  }, [token])
 
   function handleSubmit (event, token) {
     event.preventDefault()
 
-    if (safeProfile.pk) {
-      const formData = new FormData(profileForm.current)
+    const formData = new FormData()
+    formData.set('status', status)
+    formData.set('name', name)
+    formData.set('email', email)
+    formData.set('site', site)
+    formData.set('genres', genres)
+    formData.set('instruments', instruments)
+    formData.set('vacancy', vacancy)
+    formData.set('wantedInstruments', wantedInstruments)
+    formData.set('wantedInfo', wantedInfo)
+    formData.set('bio', bio)
+
+    if (hasFileUpload) {
       formData.set('image', image)
+    }
 
-      console.log('pending profile in isEditing', pendingProfile)
+    // This is just to log the formData object
+    for (let entry of formData.entries()){
+      console.log("form data:", entry)
+    }
 
-      updateProfile(token, pendingProfile, profile.pk)
+    console.log('pending profile in isEditing', profile)
+
+    // TODO: fix the conditional here so that the right request is made for creating or updating
+    if (isEditing) {
+        updateProfile(token, profile, profile.pk)
         .then(data => {
           uploadImage(token, formData, data.pk)
             .then(data => {
@@ -107,12 +105,9 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
             })
         })
     } else {
-      const formData = new FormData(profileForm.current)
-      formData.set('image', image)
+        console.log('pending profile in first Submit', profile)
 
-      console.log('pending profile in first Submit', pendingProfile)
-
-      postProfiles(token, pendingProfile)
+      postProfiles(token, profile)
         .then(data => {
           uploadImage(token, formData, data.pk)
             .then(data => {
@@ -137,7 +132,6 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
         <div className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
           <form
             className='flex flex-col'
-            ref={profileForm}
             onSubmit={(e) => {
               e.preventDefault()
               handleSubmit(e, token, history)
@@ -190,7 +184,7 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
               </div>
 
               <div className='mt-4'>
-                <Images image={image} setImage={setImage} token={token} />
+                <Images image={image} token={token} setImage={setImage} setHasFileUpload={setHasFileUpload} />
               </div>
 
             </div>

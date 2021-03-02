@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import logo from './images/logorough.jpg'
 import { getUserProfile} from '../api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import {Avatar} from './Avatar'
 
 function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImage, avatar, setAvatar }) {
   const [showMenu, setShowMenu] = useState(false)
@@ -102,19 +102,7 @@ console.log('isImage', isImage)
                 onClick={() => setShowProfile(showProfile => !showProfile)}
               >
                 <span className='sr-only'>Open User Menu></span>
-                {isImage
-              ? <img
-              className='block h-12 w-auto rounded-full'
-              src={avatar}
-              alt='avatar'
-            />
-            : <span>
-              <FontAwesomeIcon
-                icon={['far', 'user']}
-                className='text-red-300 hover:text-red-500 text-lg mb-1'
-              />
-            </span>
-            }
+            <Avatar image={avatar} />
               </button>
             </div>
             <Transition

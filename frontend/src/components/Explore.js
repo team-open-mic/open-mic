@@ -24,15 +24,13 @@ function Explore ({ token, setIsImage, setAvatar, username }) {
 
   useEffect(() => {
     getUserProfile(token).then(profile => {
-      if (!profile.image || profile.image === null) {
-        return 'loading'
-      }
-      setUserPk(profile.pk)
-      if (profile.image.length === 0 || profile.image.length === null) {
-        setIsImage(false)
-      } else {
-        setAvatar(profile.image)
-        setIsImage(true)
+      if (profile.length > 0 ){
+        if (profile.pk) {
+          setUserPk(profile.pk)
+        }
+        if (profile.image) {
+          setAvatar(profile.image)
+        }
       }
     })
   }, [token])
