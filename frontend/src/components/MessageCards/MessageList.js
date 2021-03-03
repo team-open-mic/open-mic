@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { deleteMessage, updateMessage, getMessages } from '../../api'
+import { deleteMessage, updateMessage } from '../../api'
 
 function MessageList ({ token, messages, setMessages, messageId, setMessageId }) {
-  const [triggerUseEffect, setTriggerUseEffect] = useState(false)
   const [read, setRead] = useState(false)
   const [message, setMessage] = useState([])
   const updateRead = {
@@ -11,8 +10,6 @@ function MessageList ({ token, messages, setMessages, messageId, setMessageId })
     receiver: message.receiver,
     read: read
   }
-  console.log('messages', messages.map(message => message.read))
-  console.log('message', message)
 
   const handleDelete = () => {
     deleteMessage(token, message.id).then(res => res)
@@ -61,7 +58,7 @@ function MessageList ({ token, messages, setMessages, messageId, setMessageId })
           aria-label='Message list'
           className='min-h-0 flex-1 overflow-y-auto'
         >
-          {messages.map((message, idx) => (
+          { messages && messages.map((message, idx) => (
             <ul
               key={`message-${idx}`}
               className='border-b border-gray-200 divide-y divide-gray-200'
@@ -79,7 +76,7 @@ function MessageList ({ token, messages, setMessages, messageId, setMessageId })
                         aria-hidden='true'
                       />
                       <p className='text-sm font-medium text-gray-900 truncate'>
-                        {message.sender}
+                        {message.sender.username}
                       </p>
                       <p className='text-sm text-gray-500 truncate'>
                         {message.content}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { sendMessage } from '../../api'
 
-function CreateMessage ({ showReplyMessage, token, username, messageToRender, messageReceiverUser }) {
+function CreateMessage ({ showReplyMessage, token, username, messageToRender, messageReceiverUser, handleDone }) {
   const [content, setContent] = useState('')
   const [subject, setSubject] = useState('')
 
@@ -35,10 +35,12 @@ function CreateMessage ({ showReplyMessage, token, username, messageToRender, me
     if (showReplyMessage) {
       sendMessage(token, pendingReplyMessage)
         .then(message => console.log('message', message))
+        .then(message => handleDone(message))
     } else {
       sendMessage(token, pendingNewMessage)
         .then(message => console.log('message', message))
     }
+
   }
 
   if (showReplyMessage) {
