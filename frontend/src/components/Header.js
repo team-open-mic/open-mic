@@ -6,7 +6,7 @@ import { getUserProfile } from '../api'
 import Avatar from './Avatar'
 import HeaderMobile from './HeaderMobile'
 
-function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImage, avatar, setAvatar, checkUnread, setCheckUnread }) {
+function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImage, avatar, setAvatar, checkUnread, setCheckUnread, profileComplete }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
   const history = useHistory()
@@ -123,7 +123,10 @@ function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImag
                   className='block px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-gray-100'
                   role='menuitem'
                   disabled={!isLoggedIn}
-                  onClick={() => { history.push('/view-profile'); setShowProfile(false) }}
+                  onClick={profileComplete
+                    ? () => { history.push('/view-profile'); setShowProfile(false) }
+                    : () => { history.push('/profile-setup'); setShowProfile(false) }}
+
                 >
                   Your Profile
                 </button>

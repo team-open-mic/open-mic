@@ -47,7 +47,7 @@ const instrumentsForApi = (intstruments) => {
   }
 }
 
-const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvatar }) => {
+const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvatar, setProfileComplete }) => {
   const profileForm = useRef()
   const safeProfile = profile || {}
   const { type } = useParams()
@@ -95,6 +95,7 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
   function handleSubmit (event, token) {
     event.preventDefault()
     setDisableSubmit(true)
+    setProfileComplete(true)
     if (safeProfile.pk) {
       const formData = new FormData(profileForm.current)
       formData.set('image', image)

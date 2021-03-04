@@ -29,6 +29,7 @@ function App () {
   const [messageReceiverUser, setMessageReceiverUser] = useState('')
   const [avatar, setAvatar] = useState('')
   const [checkUnread, setCheckUnread] = useState(0)
+  const [profileComplete, setProfileComplete] = useState(false)
 
   // console.log('pk', pk)
 
@@ -44,7 +45,7 @@ function App () {
   return (
     <Router>
       <div className='App'>
-        <Header username={username} token={token} setToken={setToken} isLoggedIn={isLoggedIn} isImage={isImage} pk={pk} setIsImage={setIsImage} avatar={avatar} setAvatar={setAvatar} checkUnread={checkUnread} setCheckUnread={setCheckUnread} />
+        <Header username={username} token={token} setToken={setToken} isLoggedIn={isLoggedIn} isImage={isImage} pk={pk} setIsImage={setIsImage} avatar={avatar} setAvatar={setAvatar} checkUnread={checkUnread} setCheckUnread={setCheckUnread} profileComplete={profileComplete} />
         <main>
           <Switch>
             <Route path='/registration'>
@@ -54,7 +55,7 @@ function App () {
               <Login setAuth={setAuth} isLoggedIn={isLoggedIn} setProfilePk={setProfilePk} />
             </Route>
             <Route path='/profile-setup'>
-              <ProfileSetup token={token} isLoggedIn={isLoggedIn} setIsImage={setIsImage} />
+              <ProfileSetup token={token} isLoggedIn={isLoggedIn} setIsImage={setIsImage} setProfileComplete={setProfileComplete} />
             </Route>
             <Route path='/friends'>
               <Friends token={token} isLoggedIn={isLoggedIn} username={username} />
