@@ -12,7 +12,7 @@ import Status from './profileComponents/Status'
 import WantedInstruments from './profileComponents/WantedInstruments'
 import WantedInfo from './profileComponents/WantedInfo'
 import { useParams, useHistory } from 'react-router-dom'
-import { postProfiles, deleteProfile, updateProfile, uploadImage } from '../api'
+import { postProfiles, deleteProfile, updateProfile, uploadImage, updateUserProfileStatus } from '../api'
 import Delete from './Delete'
 
 const statusForApi = (status) => {
@@ -95,7 +95,6 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
   function handleSubmit (event, token) {
     event.preventDefault()
     setDisableSubmit(true)
-    setProfileComplete(true)
     if (safeProfile.pk) {
       const formData = new FormData(profileForm.current)
       formData.set('image', image)
@@ -123,7 +122,11 @@ const ProfileSetup = ({ token, profile, userType, isEditing, setIsImage, setAvat
         .then(data => {
           uploadImage(token, formData, data.pk)
             .then(data => {
-              history.push('/explore')
+              updateUserProfileStatus(token)
+                .then(profileTrue => {
+                  setProfileComplete(true)
+                  history.push('/explore')
+                })
             })
         })
     }

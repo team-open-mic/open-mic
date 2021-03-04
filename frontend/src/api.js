@@ -139,10 +139,6 @@ export function getUserProfile (token) {
     })
 }
 
-// export function createMessage (token, pk) {
-//   // return apiUrl.post('/')
-// }
-
 export function getMessages (token) {
   return apiUrl.get('api/messages/mine/', {
     headers: {
@@ -185,6 +181,17 @@ export function deleteMessage (token, id) {
 
 export function getConnections (token) {
   return apiUrl.get('api/users/me', {
+    headers: {
+      Authorization: `Token ${token}`
+    }
+  })
+    .then(res => res.data)
+}
+
+export function updateUserProfileStatus (token) {
+  return apiUrl.put('api/users/me', {
+    profile_complete: true
+  }, {
     headers: {
       Authorization: `Token ${token}`
     }
