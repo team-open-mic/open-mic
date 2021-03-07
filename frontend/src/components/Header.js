@@ -1,7 +1,7 @@
 import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { useEffect, useState } from 'react'
-import logo from './images/new_logo_purple.jpg'
+import logo from './images/new_logo_blue.jpg'
 import { getUserProfile } from '../api'
 import Avatar from './Avatar'
 import HeaderMobile from './HeaderMobile'
