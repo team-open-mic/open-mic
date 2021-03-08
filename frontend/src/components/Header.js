@@ -18,23 +18,12 @@ function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImag
 
   console.log('unreadStatus HEADER', unreadStatus)
 
-  const updateReadStatus = (messages) => {
-    console.log('BEFORE unread header', unreadStatus)
-    const unread = []
-    messages.forEach(message => {
-      if (message.read === false) {
-        unread.push(message)
-        console.log('unread', unread.length)
-      }
-      if (unread.length === 0) {
-        setUnreadStatus(0)
-      }
-      if (unread.length > 0) {
-        setUnreadStatus(unread.length)
-      }
-      console.log('After unread header', unreadStatus)
-    })
-  }
+  useEffect(() => {
+    if (messages.length > 0) {
+      const unreadCount = messages.reduce((count, msg) =>  msg.read ? count : count + 1, 0)
+      setUnreadStatus(unreadCount)
+    }
+  }, [setUnreadStatus, messages])
 
   return (
     <nav className='bg-gray-800'>
@@ -107,10 +96,9 @@ function Header ({ username, token, setToken, isLoggedIn, pk, isImage, setIsImag
                   className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
                   onClick={() => {
                     setMessageReceiverUser('')
-                    updateReadStatus(messages)
                   }}
                 >
-                  {unreadStatus >= 1
+                  {unreadStatus > 0
                     ? `Messages (${unreadStatus} unread)`
                     : 'Messages'}
                 </Link>
