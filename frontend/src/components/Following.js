@@ -12,15 +12,19 @@ function Following ({ token, username, isLoggedIn }) {
   useEffect(() => {
     getProfiles(token)
       .then(cards => setAllCards(cards))
-      .then(getConnections(token).then(connections => {
-        setConnections(connections.following.map(following => following.following_user))
-        const followingNames = connections.following.map(following => following.following_user)
-        // setConnections(followingNames)
-        const followingProfiles = allCards.filter(profile => followingNames.includes(profile.user))
+  }, [token])
+
+  useEffect(() => {
+    getConnections(token).then(connections => {
+      setConnections(connections.following.map(following => following.following_user))
+    })
+  }, [token])
+
+  useEffect(() => {
+    const followingProfiles = allCards.filter(profile => connections.includes(profile.user))
         setFollowingCards(followingProfiles)
-      })
-      )
-  }, [])
+  }, [allCards, connections])
+
 
   // console.log('allCards.length', allCards.length)
   // console.log(allCards)
@@ -43,7 +47,7 @@ function Following ({ token, username, isLoggedIn }) {
   return (
     <div>
       {/* {friendCards && */}
-      <div className='mt-4'>
+      <div className='mt-4 following'>
         <Card cards={followingCards} connections={connections} />
       </div>
       {/* } */}
